@@ -43,4 +43,16 @@ is $o->attr_from_child, 4;
 ok +MooChild->meta->does_role('MooseRole');
 ok +MooChild->does('MooseRole');
 
+is exception {
+  package MooChildWithMod;
+  use Moo;
+  extends 'MooseParent';
+
+  has '+attr_from_parent' => (default => 5);
+}, undef,
+  'modifying inherited Moose attributes works';
+
+is +MooChildWithMod->new->attr_from_parent, 5,
+  'modification takes effect';
+
 done_testing;
